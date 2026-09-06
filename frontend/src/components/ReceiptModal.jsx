@@ -80,6 +80,27 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
             <span className="text-emerald-400">{hash}</span>
           </div>
 
+          {/* GPS and Photo Proof Section for Traceability */}
+          {(transaction.location || transaction.photoUrl) && (
+            <div className="flex gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              {transaction.photoUrl && (
+                <div className="w-16 h-16 rounded-lg overflow-hidden border border-slate-300 flex-shrink-0 bg-slate-200">
+                  <img src={transaction.photoUrl} alt="Material Proof" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <div className="flex flex-col justify-center">
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">Handover Traceability</span>
+                {transaction.location ? (
+                  <span className="text-[11px] font-mono text-slate-700 bg-slate-200/50 px-1.5 py-0.5 rounded w-fit">
+                    GPS: {transaction.location.lat.toFixed(5)}, {transaction.location.lng.toFixed(5)}
+                  </span>
+                ) : (
+                  <span className="text-[11px] text-slate-400 italic">GPS Unavailable</span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* QR Code section */}
           <div className="flex flex-col items-center justify-center pt-1 text-center">
             <div className="w-28 h-28 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center p-2">

@@ -8,6 +8,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
   const [isStreaming, setIsStreaming] = useState(false);
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const [isOfflineMode, setIsOfflineMode] = useState(!navigator.onLine);
   const [weightKg, setWeightKg] = useState(1);
   const [selectedMaterialKey, setSelectedMaterialKey] = useState(null);
@@ -165,6 +166,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+    setCapturedImage(base64Image);
     setLoading(true);
 
     // Try backend AI Vision if online, otherwise use smart offline heuristic
@@ -499,7 +501,8 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                 onAnalysisComplete({
                   ...analysis,
                   weightKg,
-                  totalCalculatedValue
+                  totalCalculatedValue,
+                  photoUrl: capturedImage
                 });
               }
               speakWarning(t.savedSuccess);

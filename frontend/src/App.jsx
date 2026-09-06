@@ -126,6 +126,23 @@ export default function App() {
     const timeNow = new Date().toISOString();
     const handoverHash = generateClientHash(`collector-${analysisResult.category}-${weight}-${total}-${timeNow}`);
 
+    let location = null;
+    try {
+      location = await new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          resolve(null);
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+          err => resolve(null),
+          { timeout: 5000 }
+        );
+      });
+    } catch (e) {
+      console.warn("GPS capture failed", e);
+    }
+
     const newTransaction = {
       _id: `TXN-${Math.floor(100000 + Math.random() * 900000)}`,
       userId: 'collector-anonymous',
@@ -141,6 +158,8 @@ export default function App() {
       handoverHash: handoverHash,
       createdAt: timeNow,
       status: 'verified_offline',
+      location: location,
+      photoUrl: analysisResult.photoUrl,
       dynamicQrCode: await QRCode.toDataURL(`SAFAAIWALA_${handoverHash}`)
     };
 
