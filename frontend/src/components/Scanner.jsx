@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Camera, RefreshCw, AlertTriangle, CheckCircle, WifiOff, Volume2, Plus, Minus, ShieldAlert, Sparkles, Package } from 'lucide-react';
+import RecyclerMatch from './RecyclerMatch';
 import { translations } from '../i18n/translations';
 
 export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' }) {
@@ -493,6 +494,13 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
               </div>
             </div>
           </div>
+
+          <RecyclerMatch 
+            materialCategory={analysis.category} 
+            weightKg={weightKg} 
+            totalValue={totalCalculatedValue} 
+            lang={lang} 
+          />
 
           {/* Action Button: Complete Digital Handover */}
           <button
