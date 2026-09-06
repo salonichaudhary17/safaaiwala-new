@@ -1,4 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-backend-webgl';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import { Camera, RefreshCw, AlertTriangle, CheckCircle, WifiOff, Volume2, Plus, Minus, ShieldAlert, Sparkles, Package } from 'lucide-react';
 import RecyclerMatch from './RecyclerMatch';
 import { translations } from '../i18n/translations';
@@ -14,6 +17,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
   const [weightKg, setWeightKg] = useState(1);
   const [selectedMaterialKey, setSelectedMaterialKey] = useState(null);
   const [showDemoGallery, setShowDemoGallery] = useState(false);
+  const [tfModel, setTfModel] = useState(null);
 
   const t = translations[lang] || translations.hi;
 
@@ -101,6 +105,21 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
       }
     }
   };
+
+  // Preload Offline ML Model
+  useEffect(() => {
+    const loadModel = async () => {
+      try {
+        await tf.ready();
+        const loadedModel = await cocoSsd.load();
+        setTfModel(loadedModel);
+        console.log("Offline TensorFlow.js COCO-SSD loaded successfully");
+      } catch (err) {
+        console.warn("Failed to load TFJS model", err);
+      }
+    };
+    loadModel();
+  }, []);
 
   const startCamera = async () => {
     try {
@@ -203,9 +222,56 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
     setCapturedImage(base64Image);
     setLoading(true);
 
-    // Try backend AI Vision if online, otherwise use smart offline heuristic
     let identified = false;
-    if (navigator.onLine && apiBaseUrl && !apiBaseUrl.includes('localhost:5000')) {
+
+    // 1. FAST OFFLINE TFJS MODEL (Natively detects cell phones, laptops, etc.)
+    if (tfModel && videoRef.current) {
+      try {
+        const predictions = await tfModel.detect(videoRef.current);
+        if (predictions && predictions.length > 0) {
+          predictions.sort((a, b) => b.score - a.score);
+          const topMatch = predictions[0];
+          console.log("TFJS Match:", topMatch);
+          
+          if (topMatch.score > 0.45) {
+             const cocoMap = {
+               'cell phone': 'battery', // Map to Lithium-Ion Battery
+               'laptop': 'pcb', // Map to PCB
+               'tv': 'crt',
+               'monitor': 'crt',
+               'mouse': 'plastic',
+               'keyboard': 'plastic',
+               'microwave': 'metal',
+               'refrigerator': 'metal',
+               'remote': 'plastic',
+               'oven': 'metal'
+             };
+
+             const mappedKey = cocoMap[topMatch.class];
+             if (mappedKey) {
+               identified = true;
+               const item = MATERIALS[mappedKey];
+               const result = {
+                 itemType: `${topMatch.class.toUpperCase()} (${item.name.split(' ')[0]})`,
+                 category: item.category || 'e-waste',
+                 estimatedValuePerKg: item.rate,
+                 hazardLevel: item.hazard,
+                 recyclability: item.recyclability,
+                 safetyWarning: item.tip,
+                 confidence: Math.round(topMatch.score * 100)
+               };
+               setAnalysis(result);
+               speakWarning(`${topMatch.class} पहचाना गया। ${item.tip}`);
+             }
+          }
+        }
+      } catch (err) {
+         console.warn("TFJS error", err);
+      }
+    }
+
+    // 2. Try backend AI Vision (Gemini) if TFJS missed it and we are online
+    if (!identified && navigator.onLine && apiBaseUrl && !apiBaseUrl.includes('localhost:5000')) {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 4000);
