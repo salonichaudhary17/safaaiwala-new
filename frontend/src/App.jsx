@@ -6,6 +6,7 @@ import LivePrices from './components/LivePrices';
 import RecyclerDashboard from './components/RecyclerDashboard';
 import ReceiptModal from './components/ReceiptModal';
 import SafetyGuide from './components/SafetyGuide';
+import Passbook from './components/Passbook';
 import ErrorBoundary from './components/ErrorBoundary';
 import { translations } from './i18n/translations';
 import { queueOfflineTransaction, syncOfflineData } from './db/offlineDb';
@@ -348,6 +349,18 @@ export default function App() {
                 >
                   {t.pricesTab}
                 </button>
+                {userRole === 'collector' && (
+                  <button
+                    onClick={() => setActiveTab('passbook')}
+                    className={`flex-1 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all ${
+                      activeTab === 'passbook'
+                        ? 'bg-white shadow-md text-emerald-800 scale-102'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {lang === 'hi' ? 'खाता' : lang === 'mr' ? 'खाते' : 'Passbook'}
+                  </button>
+                )}
                 {userRole === 'recycler' && (
                   <button
                     onClick={() => setActiveTab('recycler')}
@@ -379,6 +392,12 @@ export default function App() {
                     apiBaseUrl={API_BASE_URL}
                     lang={lang}
                   />
+                </div>
+              )}
+
+              {activeTab === 'passbook' && userRole === 'collector' && (
+                <div className="max-w-xl mx-auto">
+                  <Passbook lang={lang} />
                 </div>
               )}
 
