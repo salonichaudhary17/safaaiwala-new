@@ -500,6 +500,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
             weightKg={weightKg} 
             totalValue={totalCalculatedValue} 
             lang={lang} 
+            onSelect={(recycler) => {
+              if (onAnalysisComplete) {
+                onAnalysisComplete({
+                  ...analysis,
+                  weightKg,
+                  totalCalculatedValue: Math.round(totalCalculatedValue * recycler.rateMultiplier),
+                  photoUrl: capturedImage,
+                  selectedRecycler: recycler.name
+                });
+              }
+              speakWarning(t.savedSuccess);
+            }}
           />
 
           {/* Action Button: Complete Digital Handover */}

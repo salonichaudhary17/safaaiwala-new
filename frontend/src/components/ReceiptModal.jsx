@@ -101,6 +101,13 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
             </div>
           </div>
 
+          {transaction.selectedRecycler && (
+            <div className="bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl flex items-center justify-between">
+              <span className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">Handover Target:</span>
+              <span className="text-xs font-black text-emerald-900">{transaction.selectedRecycler}</span>
+            </div>
+          )}
+
           {/* QR Code section */}
           <div className="flex flex-col items-center justify-center pt-1 text-center">
             <div className="w-28 h-28 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center p-2">

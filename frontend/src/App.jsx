@@ -162,6 +162,7 @@ export default function App() {
       status: 'verified_offline',
       location: location,
       photoUrl: analysisResult.photoUrl,
+      selectedRecycler: analysisResult.selectedRecycler || null,
       dynamicQrCode: await QRCode.toDataURL(`SAFAAIWALA_${handoverHash}`)
     };
 

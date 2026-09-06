@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Truck, ShieldCheck, CheckCircle2, Factory } from 'lucide-react';
 
-export default function RecyclerMatch({ materialCategory, weightKg, totalValue, lang = 'hi' }) {
+export default function RecyclerMatch({ materialCategory, weightKg, totalValue, onSelect, lang = 'hi' }) {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -102,7 +102,10 @@ export default function RecyclerMatch({ materialCategory, weightKg, totalValue, 
                   <Phone className="w-3.5 h-3.5" /> 
                   {lang === 'hi' ? 'कॉल करें' : lang === 'mr' ? 'कॉल करा' : 'Call'}
                 </a>
-                <button className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 rounded-lg flex items-center justify-center gap-1.5 transition shadow-sm">
+                <button 
+                  onClick={() => onSelect(rec)}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 rounded-lg flex items-center justify-center gap-1.5 transition shadow-sm"
+                >
                   <CheckCircle2 className="w-3.5 h-3.5" /> 
                   {lang === 'hi' ? 'चुनें' : lang === 'mr' ? 'निवडा' : 'Select'}
                 </button>
