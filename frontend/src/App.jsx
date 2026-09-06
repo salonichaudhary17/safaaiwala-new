@@ -5,6 +5,7 @@ import Scanner from './components/Scanner';
 import LivePrices from './components/LivePrices';
 import RecyclerDashboard from './components/RecyclerDashboard';
 import ReceiptModal from './components/ReceiptModal';
+import SafetyGuide from './components/SafetyGuide';
 import ErrorBoundary from './components/ErrorBoundary';
 import { translations } from './i18n/translations';
 import { queueOfflineTransaction, syncOfflineData } from './db/offlineDb';
@@ -406,6 +407,9 @@ export default function App() {
             lang={lang}
           />
         )}
+
+        {/* Safety Guide FAB */}
+        {userRole === 'collector' && <SafetyGuide lang={lang} />}
       </div>
     </ErrorBoundary>
   );
