@@ -12,7 +12,7 @@ import { translations } from './i18n/translations';
 import { queueOfflineTransaction, syncOfflineData } from './db/offlineDb';
 import { Recycle, Wifi, WifiOff, Globe, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://safaaiwala-backend.onrender.com';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
