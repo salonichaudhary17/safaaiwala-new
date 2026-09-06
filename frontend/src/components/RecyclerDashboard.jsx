@@ -228,7 +228,7 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
     const timer = setTimeout(() => {
       const scanner = new Html5QrcodeScanner(
         'reader',
-        { fps: 10, qrbox: { width: 250, height: 250 }, supportedScanTypes: [0] },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
         false
       );
       scannerRef.current = scanner;
