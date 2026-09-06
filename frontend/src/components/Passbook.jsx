@@ -7,8 +7,7 @@ export default function Passbook({ lang = 'hi' }) {
   const [stats, setStats] = useState({ totalEarned: 0, pendingDues: 0, totalWeight: 0 });
   const t = translations[lang] || translations.hi;
 
-  useEffect(() => {
-    // Load offline transactions from localStorage
+  const loadData = () => {
     try {
       const saved = JSON.parse(localStorage.getItem('safaaiwala_offline_lots') || '[]');
       setTransactions(saved);
@@ -23,7 +22,6 @@ export default function Passbook({ lang = 'hi' }) {
         
         weight += w;
         
-        // Mock pending logic: if status is 'verified_offline', consider it pending cash
         if (txn.status === 'verified_offline' || !txn.synced) {
           pending += amount;
         } else {
@@ -35,30 +33,55 @@ export default function Passbook({ lang = 'hi' }) {
     } catch (e) {
       console.warn("Failed to load passbook", e);
     }
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
+
+  const handleSync = () => {
+    const saved = JSON.parse(localStorage.getItem('safaaiwala_offline_lots') || '[]');
+    const updated = saved.map(txn => ({ ...txn, synced: true, status: 'verified' }));
+    localStorage.setItem('safaaiwala_offline_lots', JSON.stringify(updated));
+    loadData();
+  };
 
   return (
     <div className="space-y-6 fade-in">
       {/* Top Stats Cards */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-emerald-600 text-white p-4 rounded-2xl shadow-lg border border-emerald-500">
-          <div className="flex items-center gap-2 text-emerald-100 mb-1">
-            <Wallet className="w-4 h-4" />
-            <span className="text-xs font-bold uppercase tracking-wide">
-              {lang === 'hi' ? 'कुल कमाई' : lang === 'mr' ? 'एकूण कमाई' : 'Total Earned'}
-            </span>
+        <div className="bg-emerald-600 text-white p-4 rounded-2xl shadow-lg border border-emerald-500 relative overflow-hidden">
+          <div className="flex items-center justify-between gap-2 text-emerald-100 mb-1 relative z-10">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4" />
+              <span className="text-xs font-bold uppercase tracking-wide">
+                {lang === 'hi' ? 'कुल कमाई' : lang === 'mr' ? 'एकूण कमाई' : 'Total Earned'}
+              </span>
+            </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black">₹{stats.totalEarned}</div>
+          <div className="text-2xl sm:text-3xl font-black relative z-10">₹{stats.totalEarned}</div>
         </div>
         
-        <div className="bg-amber-500 text-white p-4 rounded-2xl shadow-lg border border-amber-400">
-          <div className="flex items-center gap-2 text-amber-100 mb-1">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-xs font-bold uppercase tracking-wide">
-              {lang === 'hi' ? 'बकाया राशि' : lang === 'mr' ? 'बाकी रक्कम' : 'Pending Dues'}
-            </span>
+        <div className="bg-amber-500 text-white p-4 rounded-2xl shadow-lg border border-amber-400 relative">
+          <div className="flex items-center justify-between gap-2 text-amber-100 mb-1">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-xs font-bold uppercase tracking-wide">
+                {lang === 'hi' ? 'बकाया राशि' : lang === 'mr' ? 'बाकी रक्कम' : 'Pending Dues'}
+              </span>
+            </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black">₹{stats.pendingDues}</div>
+          <div className="text-2xl sm:text-3xl font-black flex items-center justify-between">
+            ₹{stats.pendingDues}
+            {stats.pendingDues > 0 && (
+              <button 
+                onClick={handleSync}
+                className="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-[10px] uppercase font-black tracking-wider transition shadow-sm border border-white/30"
+              >
+                Sync Now 🔄
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
