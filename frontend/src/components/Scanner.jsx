@@ -6,6 +6,17 @@ import { Camera, RefreshCw, AlertTriangle, CheckCircle, WifiOff, Volume2, Plus, 
 import RecyclerMatch from './RecyclerMatch';
 import { translations } from '../i18n/translations';
 
+const MAX_WEIGHT_THRESHOLDS = {
+  pcb: 10,
+  battery: 15,
+  copper: 20,
+  crt: 40,
+  metal: 30,
+  plastic: 50,
+  motor: 30,
+  cable: 20
+};
+
 export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -18,6 +29,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
   const [selectedMaterialKey, setSelectedMaterialKey] = useState(null);
   const [showDemoGallery, setShowDemoGallery] = useState(false);
   const [tfModel, setTfModel] = useState(null);
+  const [anomalyWarning, setAnomalyWarning] = useState("");
 
   const t = translations[lang] || translations.hi;
 
@@ -120,6 +132,21 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
     };
     loadModel();
   }, []);
+
+  // Anomaly/Fraud Detection Watcher
+  useEffect(() => {
+    if (selectedMaterialKey && weightKg) {
+      const maxAllowed = MAX_WEIGHT_THRESHOLDS[selectedMaterialKey] || 50;
+      if (weightKg > maxAllowed) {
+        const itemName = MATERIALS[selectedMaterialKey]?.name.split(' ')[0] || "this item";
+        setAnomalyWarning(`A single informal lot of ${itemName} rarely exceeds ${maxAllowed}kg. This transaction will be flagged for manual inspection at the gate.`);
+      } else {
+        setAnomalyWarning("");
+      }
+    } else {
+      setAnomalyWarning("");
+    }
+  }, [weightKg, selectedMaterialKey]);
 
   const startCamera = async () => {
     try {
@@ -545,6 +572,23 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
           </button>
         </div>
       </div>
+
+      {/* Anomaly/Fraud Warning Banner */}
+      {anomalyWarning && (
+        <div className="bg-red-50 border-2 border-red-500/30 p-3.5 rounded-xl mb-5 text-red-900 shadow-sm animate-pulse">
+          <div className="flex items-start gap-2">
+            <ShieldAlert className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+            <div>
+              <span className="text-xs font-black uppercase tracking-wider block text-red-800">
+                Fraud Risk Alert
+              </span>
+              <p className="text-xs sm:text-sm font-semibold mt-0.5 text-red-950">
+                {anomalyWarning}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Analysis Result Card */}
       {analysis && (
