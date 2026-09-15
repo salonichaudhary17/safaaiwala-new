@@ -31,6 +31,12 @@ export default class ErrorBoundary extends React.Component {
             <h2 className="text-2xl font-bold mb-2">Something went wrong / कुछ गड़बड़ हुई</h2>
             <p className="text-slate-300 text-sm mb-6">
               The application encountered an unexpected error. Don't worry, your offline data is safe.
+              <br/><br/>
+              <strong className="text-red-400 font-mono text-xs text-left block p-2 bg-slate-900 rounded break-all">
+                {this.state.error && this.state.error.toString()}
+                <br/>
+                {this.state.error && this.state.error.stack}
+              </strong>
             </p>
             <button
               onClick={this.handleReset}

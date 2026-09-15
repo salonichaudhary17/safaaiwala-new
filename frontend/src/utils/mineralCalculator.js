@@ -1,5 +1,5 @@
 export const calculateMinerals = (category, weightKg) => {
-  const cat = (category || "").toLowerCase();
+  const cat = String(category || "").toLowerCase();
   
   if (cat.includes("pcb") || cat.includes("laptop") || cat.includes("circuit") || cat.includes("motherboard") || cat.includes("e-waste")) {
     return [
