@@ -420,6 +420,14 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
           <QrCode className="w-5 h-5" />
           Scan Handover Receipt
         </button>
+        {/* NEW EXPORT BUTTON */}
+        <button
+          onClick={() => setShowDatasetsModal(true)}
+          className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/50 px-4 py-2.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg transition active:scale-95"
+        >
+          <Download className="w-5 h-5" /> Export CPCB Datasets
+        </button>
+
       </div>
 
       {/* Success Notification */}
