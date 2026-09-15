@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert, Download } from 'lucide-react';
+import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert, Download, Lock } from 'lucide-react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { translations } from '../i18n/translations';
 
@@ -610,11 +610,18 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
                   </span>
                 </div>
 
-                <p className="text-[11px] text-slate-400 font-mono flex items-center gap-1 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-slate-800 break-all">
-                  <Hash className="w-3 h-3 text-emerald-500 shrink-0" />
-                  <span className="text-slate-400">{t.auditHash}</span>
-                  <span className="text-emerald-400 font-semibold">{batch.batchHash}</span>
-                </p>
+                {batch.status === "Verified & Logged" ? (
+                  <p className="text-[11px] text-slate-400 font-mono flex items-center gap-1 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-slate-800 break-all shadow-inner">
+                    <Hash className="w-3 h-3 text-emerald-500 shrink-0" />
+                    <span className="text-slate-400">{t.auditHash}</span>
+                    <span className="text-emerald-400 font-semibold">{batch.batchHash}</span>
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5 bg-slate-800/40 px-2.5 py-1.5 rounded-lg border border-slate-700/50 break-all border-dashed">
+                    <Lock className="w-3 h-3 text-slate-500 shrink-0" />
+                    <span className="text-slate-500 italic">Awaiting verification to seal SHA-256 hash...</span>
+                  </p>
+                )}
               </div>
 
               {/* Weight & Action Button */}
