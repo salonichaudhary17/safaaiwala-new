@@ -639,7 +639,7 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
                         </div>
                         <div className="bg-red-900/40 px-2 py-1.5 rounded border border-red-800/50 flex justify-between items-center text-[10px]">
                           <span className="text-red-300">Anomaly Score:</span>
-                          <span className="text-red-400 font-mono font-bold">High (Z-score > 3.2)</span>
+                          <span className="text-red-400 font-mono font-bold">High (Z-score &gt; 3.2)</span>
                         </div>
                         <p className="text-[10px] text-red-300/90 leading-tight">
                           Expected typical lot range: 8–18 kg per unit. Manual weigh-in required.

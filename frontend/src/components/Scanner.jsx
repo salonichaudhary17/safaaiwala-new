@@ -606,7 +606,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
               
               <div className="flex flex-wrap gap-1.5 mt-2 mb-2">
                  <span className="bg-red-900 text-white text-[10px] px-2 py-0.5 rounded shadow-sm font-mono font-bold tracking-tight">
-                    Anomaly Score: High (Z-score > {anomalyWarning.zScore})
+                    Anomaly Score: High (Z-score &gt; {anomalyWarning.zScore})
                  </span>
                  <span className="bg-red-900 text-white text-[10px] px-2 py-0.5 rounded shadow-sm font-mono font-bold tracking-tight">
                     Density Check: Failed
