@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Printer, Download, CheckCircle2, ShieldCheck, QrCode, Pickaxe } from 'lucide-react';
+import { X, Printer, Download, CheckCircle2, ShieldCheck, QrCode, Diamond } from 'lucide-react';
 import { calculateMinerals } from '../utils/mineralCalculator';
 import { translations } from '../i18n/translations';
 
@@ -85,7 +85,7 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
             return (
               <div className="bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-inner">
                 <h4 className="text-[9px] uppercase font-black text-slate-400 mb-2 tracking-wider flex items-center gap-1.5">
-                  <Pickaxe className="w-3.5 h-3.5 text-amber-500" />
+                  <Diamond className="w-3.5 h-3.5 text-amber-500" />
                   Strategic Mineral Yield (CPCB Critical Reserve)
                 </h4>
                 <div className="flex flex-wrap gap-2">
