@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert } from 'lucide-react';
+import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert, Download } from 'lucide-react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { translations } from '../i18n/translations';
 
@@ -13,6 +13,7 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
   const [showQrScanner, setShowQrScanner] = useState(false);
   const [scannedHash, setScannedHash] = useState(null);
   const [resolvingBatch, setResolvingBatch] = useState(null);
+  const [showDatasetsModal, setShowDatasetsModal] = useState(false);
   const [actualWeight, setActualWeight] = useState('');
 
   // 1. Comprehensive Incoming Batches (Delhi, Mumbai, Bengaluru, Pune, Chennai, etc.)
@@ -692,6 +693,53 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
               className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-bold transition flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="w-5 h-5" /> Gen Reconciliation Hash & Pay
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* CPCB Datasets Export Modal */}
+      {showDatasetsModal && (
+        <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h3 className="text-xl font-black text-white flex items-center gap-2">
+                  <Download className="w-6 h-6 text-emerald-500" /> CPCB Compliance Export
+                </h3>
+                <p className="text-slate-400 text-sm mt-1">Generate official CSV logs for regulatory auditing.</p>
+              </div>
+              <button onClick={() => setShowDatasetsModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="grid gap-3">
+              {[
+                { title: 'Material Classification Dataset', desc: 'AI confidence logs, weight averages, images' },
+                { title: 'Price & Trend History Dataset', desc: 'Daily local and national rate fluctuations' },
+                { title: 'Authorized Recycler Registry', desc: 'CPCB status, capacities, matched logs' },
+                { title: 'Transaction & Payout Log', desc: 'Financial transfers, weight anomalies, overrides' },
+                { title: 'End-to-End Traceability Ledger', desc: 'SHA-256 hashes, GPS nodes, timestamps' },
+                { title: 'Collector Profile & Micro-Passbook Dataset', desc: 'Anonymized earning histories, device IDs' }
+              ].map((ds, idx) => (
+                <div key={idx} className="bg-slate-800/50 p-4 rounded-xl border border-slate-700 flex justify-between items-center group hover:border-emerald-500/50 transition">
+                  <div>
+                    <h4 className="font-bold text-slate-200">{ds.title}</h4>
+                    <p className="text-xs text-slate-500 mt-0.5">{ds.desc}</p>
+                  </div>
+                  <button onClick={() => alert('Downloading ' + ds.title + '...')} className="bg-slate-700 group-hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                    <Download className="w-3.5 h-3.5" /> .CSV
+                  </button>
+                </div>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setShowDatasetsModal(false)}
+              className="w-full mt-6 bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl font-bold transition"
+            >
+              Close
             </button>
           </div>
         </div>
