@@ -25,7 +25,8 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
       status: 'In Transit',
       batchHash: 'a7b8f9e01234c5678d90ef123456789a2b3c4d5e',
       hazardLevel: 'Moderate',
-      eta: '25 mins'
+      eta: '25 mins',
+      isFlaggedForFraud: true
     },
     {
       id: 'TXN-90815',
@@ -59,9 +60,9 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
       weightKg: 210.0,
       collector: 'Venkatesh Babu (CW-621)',
       status: 'Received',
-      batchHash: 'd5e6f7a8b9c0123456789abcdef0123456789abc',
-      hazardLevel: 'Moderate',
-      eta: 'At Gate 2'
+      batchHash: '32109876543210fedcba0987654321fedcba',
+      hazardLevel: 'Low',
+      eta: 'Arrived'
     },
     {
       id: 'TXN-90835',
@@ -205,7 +206,39 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
     }
   ];
 
-  const verifyBatch = (id) => {
+  
+
+  // Dynamically load newly created transactions from localStorage so they appear instantly!
+  useEffect(() => {
+    try {
+      const savedLots = JSON.parse(localStorage.getItem('safaaiwala_offline_lots') || '[]');
+      if (savedLots && savedLots.length > 0) {
+        const formattedLots = savedLots.map(lot => ({
+          id: lot._id,
+          origin: lot.location ? `${lot.location.lat.toFixed(4)}, ${lot.location.lng.toFixed(4)} (GPS)` : 'Local Drop-off',
+          city: 'delhi',
+          material: lot.itemsList && lot.itemsList.length > 0 ? lot.itemsList[0].materialName : 'E-Waste',
+          weightKg: lot.itemsList && lot.itemsList.length > 0 ? lot.itemsList[0].weightKg : 0,
+          collector: 'Current Kabadiwala',
+          status: 'In Transit',
+          batchHash: lot.handoverHash || 'none',
+          hazardLevel: lot.hazardLevel || 'Unknown',
+          eta: 'Just Now',
+          isFlaggedForFraud: lot.isFlaggedForFraud
+        }));
+
+        setIncomingBatches(prev => {
+          const newIds = formattedLots.map(f => f.id);
+          const filteredPrev = prev.filter(p => !newIds.includes(p.id));
+          return [...formattedLots, ...filteredPrev];
+        });
+      }
+    } catch (e) {
+      console.warn("Could not load local lots", e);
+    }
+  }, []);
+
+const verifyBatch = (id) => {
     setIncomingBatches(prev =>
       prev.map(item =>
         item.id === id

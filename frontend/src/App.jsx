@@ -163,6 +163,7 @@ export default function App() {
       location: location,
       photoUrl: analysisResult.photoUrl,
       selectedRecycler: analysisResult.selectedRecycler || null,
+      isFlaggedForFraud: analysisResult.isFlaggedForFraud || false,
       dynamicQrCode: await QRCode.toDataURL(`SAFAAIWALA_${handoverHash}`)
     };
 
