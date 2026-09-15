@@ -74,6 +74,10 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
               </span>
             </div>
 
+            <span className="text-2xl font-black text-emerald-800">₹{totalVal}</span>
+          </div>
+
+
           {/* Strategic Mineral Yield */}
           {(() => {
             const materialName = Array.isArray(transaction.itemsList) && transaction.itemsList.length > 0 
@@ -99,9 +103,6 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
               </div>
             );
           })()}
-
-            <span className="text-2xl font-black text-emerald-800">₹{totalVal}</span>
-          </div>
 
           <div className="bg-slate-900 text-white p-2.5 rounded-xl border border-slate-800 font-mono text-[10px] break-all">
             <span className="text-slate-400 block mb-0.5">SHA-256 Custody Hash:</span>
