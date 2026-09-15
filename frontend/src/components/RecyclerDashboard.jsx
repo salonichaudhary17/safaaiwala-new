@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X } from 'lucide-react';
+import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert } from 'lucide-react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { translations } from '../i18n/translations';
 
@@ -495,9 +495,9 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
               </div>
 
               {/* Weight & Action Button */}
-              <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-slate-700/60 pt-3 md:pt-0">
-                <div className="text-left md:text-right">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+              <div className="flex flex-col items-end gap-3 w-full md:w-auto border-t md:border-t-0 border-slate-700/60 pt-3 md:pt-0">
+                <div className="text-right w-full flex justify-between md:justify-end items-center gap-4">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                     {t.batchWeight}
                   </span>
                   <span className="text-xl sm:text-2xl font-black text-emerald-400">
@@ -505,15 +505,23 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
                   </span>
                 </div>
 
+                {/* Fraud Alert Banner for Recycler */}
+                {batch.isFlaggedForFraud && (
+                  <div className="bg-red-950/80 border border-red-600/50 text-red-400 px-3 py-2 rounded-lg text-[10px] sm:text-xs font-bold w-full md:max-w-xs flex items-start gap-1.5 animate-pulse shadow-lg">
+                    <ShieldAlert className="w-4 h-4 shrink-0 text-red-500" />
+                    <span>⚠️ SYSTEM ALERT: Unrealistic weight anomaly detected. Manual weigh-in required before payment.</span>
+                  </div>
+                )}
+
                 {batch.status !== 'Verified & Logged' ? (
                   <button
                     onClick={() => verifyBatch(batch.id)}
-                    className="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-1.5 transition shadow-lg"
+                    className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex justify-center items-center gap-1.5 transition shadow-lg"
                   >
                     <ShieldCheck className="w-4 h-4" /> {t.verifyBatchBtn}
                   </button>
                 ) : (
-                  <div className="bg-emerald-950/80 text-emerald-400 text-xs px-3.5 py-2 rounded-xl border border-emerald-700/60 flex items-center gap-1.5 font-bold">
+                  <div className="w-full md:w-auto bg-emerald-950/80 text-emerald-400 text-xs px-3.5 py-2 rounded-xl border border-emerald-700/60 flex justify-center items-center gap-1.5 font-bold">
                     <PackageCheck className="w-4 h-4 text-emerald-400" />
                     <span>{t.batchVerified}</span>
                   </div>
