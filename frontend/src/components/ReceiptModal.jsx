@@ -19,7 +19,7 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
 
   return (
     <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-5 sm:p-6 border border-slate-200">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-5 sm:p-6 border border-slate-200 max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="text-emerald-600 w-6 h-6" />
