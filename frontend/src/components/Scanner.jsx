@@ -139,14 +139,26 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
       const maxAllowed = MAX_WEIGHT_THRESHOLDS[selectedMaterialKey] || 50;
       if (weightKg > maxAllowed) {
         const itemName = MATERIALS[selectedMaterialKey]?.name.split(' ')[0] || "this item";
-        setAnomalyWarning(`A single informal lot of ${itemName} rarely exceeds ${maxAllowed}kg. This transaction will be flagged for manual inspection at the gate.`);
+        
+        let title = "Fraud Risk Alert";
+        let message = `A single informal lot of ${itemName} rarely exceeds ${maxAllowed}kg. This transaction will be flagged for manual inspection at the gate.`;
+        
+        if (lang === 'hi') {
+          title = "धोखाधड़ी जोखिम चेतावनी";
+          message = `एक बार में ${itemName} का वजन शायद ही कभी ${maxAllowed}kg से अधिक होता है। गेट पर इस लेन-देन की मैन्युअल जांच की जाएगी।`;
+        } else if (lang === 'mr') {
+          title = "फसवणूक धोका इशारा";
+          message = `एका वेळी ${itemName} चे वजन क्वचितच ${maxAllowed}kg पेक्षा जास्त असते. गेटवर या व्यवहाराची मॅन्युअल तपासणी केली जाईल.`;
+        }
+
+        setAnomalyWarning({ title, message });
       } else {
-        setAnomalyWarning("");
+        setAnomalyWarning(null);
       }
     } else {
-      setAnomalyWarning("");
+      setAnomalyWarning(null);
     }
-  }, [weightKg, selectedMaterialKey]);
+  }, [weightKg, selectedMaterialKey, lang]);
 
   const startCamera = async () => {
     try {
@@ -580,10 +592,10 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
             <ShieldAlert className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
             <div>
               <span className="text-xs font-black uppercase tracking-wider block text-red-800">
-                Fraud Risk Alert
+                {anomalyWarning.title}
               </span>
               <p className="text-xs sm:text-sm font-semibold mt-0.5 text-red-950">
-                {anomalyWarning}
+                {anomalyWarning.message}
               </p>
             </div>
           </div>
