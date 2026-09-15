@@ -32,7 +32,7 @@ const recyclerSchema = new mongoose.Schema({
 
 // 4. Transaction Schema
 const transactionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: String }, // Switched to String since frontend sends 'collector-anonymous' temporarily
   recyclerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Recycler' },
   collectorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Collector' },
   itemsList: [{
@@ -43,9 +43,16 @@ const transactionSchema = new mongoose.Schema({
     subtotal: Number
   }],
   totalAmount: { type: Number, required: true },
+  hazardLevel: { type: String },
+  handoverHash: { type: String },
+  location: {
+    lat: Number,
+    lng: Number
+  },
+  photoUrl: { type: String },
+  selectedRecycler: { type: String },
   status: {
     type: String,
-    enum: ['pending', 'assigned', 'collected', 'recycled', 'cancelled'],
     default: 'pending'
   },
   dynamicQrCode: { type: String }

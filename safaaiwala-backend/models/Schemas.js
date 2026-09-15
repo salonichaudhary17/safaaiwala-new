@@ -70,9 +70,15 @@ const transactionSchema = new mongoose.Schema(
     totalAmount: { type: Number, required: true },
     totalWeightKg: { type: Number, required: true },
     handoverHash: { type: String, required: true, unique: true },
+    location: {
+      lat: Number,
+      lng: Number
+    },
+    photoUrl: { type: String },
+    hazardLevel: { type: String },
+    selectedRecycler: { type: String },
     status: {
       type: String,
-      enum: ['pending', 'assigned', 'collected', 'verified', 'recycled'],
       default: 'verified'
     },
     dynamicQrCode: { type: String }
