@@ -212,41 +212,58 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
   
 
   
-    const downloadMockCSV = (title) => {
+      const downloadMockCSV = (title) => {
     let csvContent = "data:text/csv;charset=utf-8,";
     
+    let savedLots = [];
+    try {
+      savedLots = JSON.parse(localStorage.getItem("safaaiwala_offline_lots") || "[]");
+    } catch(e) {}
+
     if (title.includes("Material Classification")) {
-      csvContent += "Timestamp,DeviceID,Material,AI_Confidence_Score,Est_Weight_Kg\n";
-      csvContent += "2024-11-12 10:00,DEV-991,CRT Monitor,98.5%,40.5\n";
-      csvContent += "2024-11-12 11:30,DEV-422,PCB Board,92.1%,12.0\n";
-      csvContent += "2024-11-12 12:45,DEV-773,Copper Cables,89.4%,25.2\n";
-    } else if (title.includes("Price & Trend")) {
-      csvContent += "Date,Material,Global_Index_USD,Local_Mandi_Rate_INR,Our_Platform_Rate_INR,Trend\n";
-      csvContent += "2024-11-10,Copper,8.45,710,725,+1.2%\n";
-      csvContent += "2024-11-11,Copper,8.50,715,730,+0.8%\n";
-      csvContent += "2024-11-12,PCB,12.20,1050,1100,+2.1%\n";
-    } else if (title.includes("Authorized Recycler")) {
-      csvContent += "RecyclerID,Company_Name,CPCB_Auth_Number,Capacity_Kg,Location,Status\n";
-      csvContent += "REC-001,Green E-Waste Hub,CPCB-EW-2023-01,10000,Delhi NCR,ACTIVE\n";
-      csvContent += "REC-002,Eco MetalliX,CPCB-EW-2023-45,25000,Pune MIDC,ACTIVE\n";
-      csvContent += "REC-003,Urban Miners,CPCB-EW-2022-89,5000,Bengaluru,UNDER_REVIEW\n";
-    } else if (title.includes("Transaction & Payout")) {
-      csvContent += "TransactionID,CollectorID,AmountPaid_INR,Weight_Kg,FraudFlag\n";
-      csvContent += "TXN-90812,CW-481,12300,145.5,TRUE\n";
-      csvContent += "TXN-90815,CW-109,24000,320.0,FALSE\n";
-      csvContent += "TXN-90822,CW-312,8500,85.0,FALSE\n";
-    } else if (title.includes("Traceability Ledger")) {
-      csvContent += "BatchID,Origin_GPS,Destination_Hub,Custody_Hash,Verification_Timestamp\n";
-      csvContent += "BATCH-441,28.6929 77.2898,REC-001,sha256_a7b8f9e0123,2024-11-12 14:00\n";
-      csvContent += "BATCH-442,19.0760 72.8777,REC-002,sha256_c4d5e6f7a8b,2024-11-12 15:30\n";
-    } else if (title.includes("Collector Profile")) {
-      csvContent += "CollectorID,Total_Lots_Submitted,Total_Earnings_INR,Safety_Rating,Account_Status\n";
-      csvContent += "CW-481,142,345000,4.8,VERIFIED\n";
-      csvContent += "CW-109,89,120400,4.2,VERIFIED\n";
-      csvContent += "CW-312,12,14500,3.9,PROBATION\n";
-    } else {
-      csvContent += "LogID,Timestamp,Action,Status,Hash_Signature\n";
-      csvContent += "LOG-001,2024-11-12 09:15,Verification,Success,sha256_abcdef123456\n";
+      csvContent += "Timestamp,DeviceID,Material,Hazard_Level,Est_Weight_Kg\n";
+      if (savedLots.length > 0) {
+        savedLots.forEach(lot => {
+          const item = lot.itemsList?.[0];
+          csvContent += `${lot.createdAt},${lot.userId},${item?.materialName || "Unknown"},${lot.hazardLevel},${item?.weightKg || 0}\n`;
+        });
+      } else {
+        csvContent += "2024-11-12 10:00,DEV-991,CRT Monitor,High Hazard,40.5\n";
+      }
+    } 
+    else if (title.includes("Authorized Recycler")) {
+      csvContent += "RecyclerID,Company_Name,CPCB_Auth_Number,Capacity,Location,Status\n";
+      EPR_RECYCLERS.forEach(r => {
+        csvContent += `${r.id},${r.name},${r.authId},"${r.capacity}","${r.location}",${r.status}\n`;
+      });
+    } 
+    else if (title.includes("Transaction & Payout") || title.includes("Traceability")) {
+      if (title.includes("Payout")) {
+        csvContent += "TransactionID,CollectorID,AmountPaid_INR,Weight_Kg,FraudFlag\n";
+        incomingBatches.forEach(b => {
+          csvContent += `${b.id},${b.collector.split(" ")[0]},${Math.round(b.weightKg*85)},${b.weightKg},${b.isFlaggedForFraud ? "TRUE" : "FALSE"}\n`;
+        });
+      } else {
+        csvContent += "BatchID,Origin_GPS,Destination_Hub,Custody_Hash,Status,ETA\n";
+        incomingBatches.forEach(b => {
+          csvContent += `${b.id},"${b.origin}",${b.city.toUpperCase()},${b.batchHash},${b.status},${b.eta}\n`;
+        });
+      }
+    } 
+    else if (title.includes("Price & Trend")) {
+      csvContent += "Material_Category,Base_Rate_INR,Trend_Direction,Market_Demand\n";
+      csvContent += "Printed Circuit Boards (PCBs),₹185/kg,UP,+4.2%\n";
+      csvContent += "Copper Scrap / Cables,₹715/kg,UP,+1.8%\n";
+      csvContent += "Electric Motors / Compressors,₹105/kg,STABLE,0%\n";
+      csvContent += "Lithium-ion Batteries,₹145/kg,DOWN,-2.1%\n";
+      csvContent += "CRT Glass / Monitor Screens,₹85/kg,UP,+1.5%\n";
+      csvContent += "Mixed E-Waste Plastics,₹55/kg,STABLE,+0.5%\n";
+    }
+    else if (title.includes("Collector Profile")) {
+      csvContent += "CollectorID,Total_Lots_Submitted,Safety_Rating,Account_Status\n";
+      csvContent += "Current Kabadiwala," + savedLots.length + ",4.8,VERIFIED\n";
+      csvContent += "Kabadiwala Ram Prasad (CW-481),142,4.5,VERIFIED\n";
+      csvContent += "Kishan Lal Scrap Network (CW-109),89,4.2,VERIFIED\n";
     }
 
     const encodedUri = encodeURI(csvContent);
@@ -257,7 +274,6 @@ export default function RecyclerDashboard({ lang = 'hi' }) {
     link.click();
     document.body.removeChild(link);
   };
-
   // Dynamically load newly created transactions from localStorage so they appear instantly!
   useEffect(() => {
     try {
