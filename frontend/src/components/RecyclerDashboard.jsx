@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, ShieldCheck, Hash, PackageCheck, MapPin, Building, Phone, Filter, Search, CheckCircle2, Award, Clock, QrCode, X, ShieldAlert, Download, Lock } from 'lucide-react';
+import { Diamond } from "lucide-react";
+import { calculateMinerals } from "../utils/mineralCalculator";
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { translations } from '../i18n/translations';
 
