@@ -670,7 +670,8 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                   weightKg,
                   totalCalculatedValue: Math.round(totalCalculatedValue * recycler.rateMultiplier),
                   photoUrl: capturedImage,
-                  selectedRecycler: recycler.name
+                  selectedRecycler: recycler.name,
+                  isFlaggedForFraud: !!anomalyWarning
                 });
               }
               speakWarning(t.savedSuccess);
@@ -685,7 +686,8 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                   ...analysis,
                   weightKg,
                   totalCalculatedValue,
-                  photoUrl: capturedImage
+                  photoUrl: capturedImage,
+                  isFlaggedForFraud: !!anomalyWarning
                 });
               }
               speakWarning(t.savedSuccess);
