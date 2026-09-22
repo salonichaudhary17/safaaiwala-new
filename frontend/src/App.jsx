@@ -284,7 +284,7 @@ export default function App() {
                   onClick={handleLogout}
                   className="bg-slate-800 text-white px-3 py-1.5 rounded-full text-xs font-bold border border-slate-700 hover:bg-slate-700"
                 >
-                  Logout
+                  {{ hi: 'लॉगआउट', mr: 'लॉगआउट', en: 'Logout', bn: 'লগআউট', gu: 'લોગઆઉટ', kn: 'ಲಾಗ್ಔಟ್', te: 'లాగ్అవుట్', ta: 'லாக்அவுட்' }[lang] || 'Logout'}
                 </button>
               )}
             </div>
@@ -377,7 +377,7 @@ export default function App() {
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    {lang === 'hi' ? 'खाता' : lang === 'mr' ? 'खाते' : 'Passbook'}
+                    {{ hi: 'खाता', mr: 'खाते', en: 'Passbook', bn: 'পাসবুক', gu: 'પાસબુક', kn: 'ಪಾಸ್‌ಬುಕ್', te: 'పాస్‌బుక్', ta: 'பாஸ்புக்' }[lang] || 'Passbook'}
                   </button>
                 )}
                 {userRole === 'recycler' && (
