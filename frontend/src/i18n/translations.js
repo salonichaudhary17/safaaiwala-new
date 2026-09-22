@@ -282,9 +282,7 @@ export const translations = {
     doneBtn: "पूर्ण",
     envSaved: "पर्यावरणीय फायदा:",
     co2Saved: "किलो CO2 उत्सर्जनातून बचाव"
-  }
-};
-
+  },
   bn: {
     appTitle: "সাফাইওয়ালা",
     subTitle: "कबाड़ीवालों के लिए CPCB EPR अधिकृत ई-कचरा प्लेटफॉर्म",
