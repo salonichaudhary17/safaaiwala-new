@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { AlertTriangle, X, Battery, Droplet, Flame, Volume2 } from 'lucide-react';
-import { translations } from '../i18n/translations';
+const fs = require('fs');
+const path = './frontend/src/components/SafetyGuide.jsx';
+let content = fs.readFileSync(path, 'utf8');
 
-export default function SafetyGuide({ lang = 'hi' }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const t = translations[lang] || translations.hi;
-
-    const safetyItems = [
+const safetyData = `  const safetyItems = [
     {
       icon: <Flame className="w-8 h-8 text-red-500" />,
       title: { hi: 'तारों को न जलाएं', mr: 'वायर जाळू नका', en: 'Do Not Burn Cables', bn: 'তার পোড়াবেন না', gu: 'વાયર બાળશો નહીં', kn: 'ತಂತಿಗಳನ್ನು ಸುಡಬೇಡಿ', te: 'తీగలను కాల్చవద్దు', ta: 'கம்பிகளை எரிக்க வேண்டாம்' }[lang] || 'Do Not Burn Cables',
@@ -25,73 +21,12 @@ export default function SafetyGuide({ lang = 'hi' }) {
       desc: { hi: 'सर्किट बोर्ड से सोना निकालने के लिए एसिड का उपयोग न करें। यह जानलेवा है।', mr: 'सर्किट बोर्डमधून सोने काढण्यासाठी अॅसिड वापरू नका. हे धोकादायक आहे.', en: 'Do not use acid to extract gold from circuit boards. It is lethal.', bn: 'সার্কিট বোর্ড থেকে সোনা বের করতে অ্যাসিড ব্যবহার করবেন না।', gu: 'સર્કિટ બોર્ડમાંથી સોનું કાઢવા એસિડ વાપરશો નહીં.', kn: 'ಸರ್ಕ್ಯೂಟ್ ಬೋರ್ಡ್‌ನಿಂದ ಚಿನ್ನ ತೆಗೆಯಲು ಆಮ್ಲ ಬಳಸಬೇಡಿ.', te: 'సర్క్యూట్ బోర్డ్ నుండి బంగారం తీయడానికి యాసిడ్ ఉపయోగించవద్దు.', ta: 'சர்க்யூட் போர்டில் இருந்து தங்கம் எடுக்க அமிலத்தை பயன்படுத்த வேண்டாம்.' }[lang] || 'Do not use acid to extract gold from circuit boards. It is lethal.',
       color: 'bg-yellow-50 border-yellow-200 text-yellow-900'
     }
-  ];
+  ];`;
 
-  const speak = (text) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN');
-      window.speechSynthesis.speak(utterance);
-    }
-  };
+// Just find "const safetyItems =" and replace everything up to "];"
+const startIdx = content.indexOf('const safetyItems =');
+const endIdx = content.indexOf('];', startIdx) + 2;
 
-  return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-3 sm:p-4 rounded-full shadow-2xl flex items-center justify-center transition active:scale-95 z-40 border-2 border-white"
-        aria-label="Safety Guide"
-      >
-        <AlertTriangle className="w-6 h-6 sm:w-8 sm:h-8" />
-      </button>
-
-      {isOpen && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
-            <div className="bg-red-600 p-4 flex justify-between items-center text-white">
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="w-6 h-6" />
-                <h3 className="font-black text-lg">
-                                    {{ hi: 'सुरक्षा निर्देश', mr: 'सुरक्षा सूचना', en: 'Safety Guidelines', bn: 'নিরাপত্তা নির্দেশিকা', gu: 'સુરક્ષા માર્ગદર્શિકા', kn: 'ಸುರಕ್ಷತಾ ಮಾರ್ಗಸೂಚಿಗಳು', te: 'భద్రతా సూచనలు', ta: 'பாதுகாப்பு வழிகாட்டுதல்கள்' }[lang] || 'Safety Guidelines'}
-                </h3>
-              </div>
-              <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-red-700 transition">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="p-4 sm:p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-              {safetyItems.map((item, idx) => (
-                <div key={idx} className={`p-4 rounded-xl border ${item.color} flex gap-4 items-start`}>
-                  <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 flex-shrink-0">
-                    {item.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-sm sm:text-base mb-1">{item.title}</h4>
-                    <p className="text-xs sm:text-sm opacity-90">{item.desc}</p>
-                  </div>
-                  <button 
-                    onClick={() => speak(`${item.title}. ${item.desc}`)}
-                    className="p-2 bg-white/50 hover:bg-white rounded-full transition shadow-sm border border-slate-200/50"
-                  >
-                    <Volume2 className="w-5 h-5 opacity-80" />
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-            <div className="p-4 bg-slate-50 border-t border-slate-200">
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition"
-              >
-                {t.doneBtn || 'Done'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
+content = content.substring(0, startIdx) + safetyData + content.substring(endIdx);
+fs.writeFileSync(path, content, 'utf8');
+console.log('SafetyGuide patched successfully!');

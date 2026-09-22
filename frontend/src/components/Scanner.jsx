@@ -815,7 +815,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                   itemAge
                 });
               }
-              speakWarning(t.savedSuccess);
+              speakWarning(
+                { 
+                  hi: `${recycler.name} को चुना गया`, 
+                  mr: `${recycler.name} निवडले`, 
+                  en: `${recycler.name} selected`,
+                  bn: `${recycler.name} নির্বাচন করা হয়েছে`,
+                  gu: `${recycler.name} પસંદ કરેલ છે`,
+                  kn: `${recycler.name} ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ`,
+                  te: `${recycler.name} ఎంచుకోబడింది`,
+                  ta: `${recycler.name} தேர்ந்தெடுக்கப்பட்டது`
+                }[lang] || `${recycler.name} selected`
+              );
             }}
           />
 
