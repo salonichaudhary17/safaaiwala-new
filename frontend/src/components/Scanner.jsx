@@ -126,6 +126,10 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
           // 3. Fallback to any Google Voice (Desktop Chrome cloud voices usually work better)
           if (!voice && targetLang !== 'en-IN') voice = voices.find(v => v.name.includes('Google') && v.lang.startsWith(targetLang.split('-')[0]));
           
+          if (!voice && targetLang === 'mr-IN') {
+             voice = voices.find(v => v.lang.startsWith('hi'));
+          }
+          
           if (voice) {
             utterance.voice = voice;
           }
