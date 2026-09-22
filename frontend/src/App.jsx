@@ -252,6 +252,18 @@ export default function App() {
                 >
                   मराठी
                 </button>
+                <select
+                  onChange={(e) => handleLangChange(e.target.value)}
+                  value={['en', 'hi', 'mr'].includes(lang) ? '' : lang}
+                  className="bg-emerald-800 text-emerald-100 text-xs font-black px-2 py-1 rounded-lg outline-none border-none ml-1 appearance-none"
+                >
+                  <option value="" disabled>More...</option>
+                  <option value="bn">বাংলা</option>
+                  <option value="gu">ગુજરાતી</option>
+                  <option value="kn">ಕನ್ನಡ</option>
+                  <option value="te">తెలుగు</option>
+                  <option value="ta">தமிழ்</option>
+                </select>
               </div>
 
               {/* Online / Offline Status Badge */}

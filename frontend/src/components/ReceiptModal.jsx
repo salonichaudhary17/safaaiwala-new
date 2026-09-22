@@ -47,12 +47,13 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
 
           <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
             <span className="text-[10px] text-slate-400 uppercase font-black tracking-wider block mb-2">
-              {lang === 'hi' ? 'लॉट का विवरण' : lang === 'mr' ? 'लॉट तपशील' : 'Itemized Scrap Details'}
+              {{ bn: 'লট বিবরণ', gu: 'લોટ વિગતો', kn: 'ಲಾಟ್ ವಿವರಗಳು', te: 'లాట్ వివరాలు', ta: 'லாட் விவரங்கள்', hi: 'लॉट का विवरण', mr: 'लॉट तपशील', en: 'Itemized Scrap Details' }[lang] || 'Itemized Scrap Details'}
             </span>
             {Array.isArray(transaction.itemsList) && transaction.itemsList.length > 0 ? (
               transaction.itemsList.map((item, idx) => {
                 const cond = item.condition || transaction.condition || 'semi-working';
-                const condText = cond === 'working' ? (lang === 'hi' ? 'चालू स्थिति' : lang === 'mr' ? 'चालू स्थिती' : 'Working') : cond === 'scrap' ? (lang === 'hi' ? 'टूटा-फूटा' : lang === 'mr' ? 'तुटलेले' : 'Broken Scrap') : (lang === 'hi' ? 'मरम्मत योग्य' : lang === 'mr' ? 'दुरुस्तीयोग्य' : 'Repairable');
+                const condMap = { working: {bn:'কাজ করছে',gu:'ચાલુ',kn:'ಕೆಲಸ ಮಾಡುತ್ತಿದೆ',te:'పనిచేస్తోంది',ta:'வேலை செய்கிறது',hi:'चालू स्थिति',mr:'चालू स्थिती',en:'Working'}, scrap: {bn:'ভাঙা',gu:'તૂટેલું',kn:'ತುಂಡಾದ',te:'విరిగిన',ta:'உடைந்த',hi:'टूटा-फूटा',mr:'तुटलेले',en:'Broken Scrap'}, semi: {bn:'আংশিক',gu:'આંશિક',kn:'ಅರೆ-ಹಾನಿಯಾಗಿದೆ',te:'పాక్షికంగా',ta:'பழுது',hi:'मरम्मत योग्य',mr:'दुरुस्तीयोग्य',en:'Repairable'} };
+                const condText = cond === 'working' ? condMap.working[lang]||condMap.working.en : cond === 'scrap' ? condMap.scrap[lang]||condMap.scrap.en : condMap.semi[lang]||condMap.semi.en;
                 const ageText = item.itemAge || transaction.itemAge || '2-5 Yrs';
                 return (
                   <div key={idx} className="flex flex-col py-2 border-b border-slate-200/50 last:border-0">
@@ -75,7 +76,11 @@ export default function ReceiptModal({ transaction, onClose, lang = 'hi' }) {
                 </div>
                 <div className="flex gap-2">
                   <span className="text-[9px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-bold uppercase">
-                    {transaction.condition === 'working' ? (lang === 'hi' ? 'चालू स्थिति' : lang === 'mr' ? 'चालू स्थिती' : 'Working') : transaction.condition === 'scrap' ? (lang === 'hi' ? 'टूटा-फूटा' : lang === 'mr' ? 'तुटलेले' : 'Broken Scrap') : (lang === 'hi' ? 'मरम्मत योग्य' : lang === 'mr' ? 'दुरुस्तीयोग्य' : 'Repairable')}
+                    {(() => {
+                    const cond = transaction.condition || 'semi-working';
+                    const condMap = { working: {bn:'কাজ করছে',gu:'ચાલુ',kn:'ಕೆಲಸ ಮಾಡುತ್ತಿದೆ',te:'పనిచేస్తోంది',ta:'வேலை செய்கிறது',hi:'चालू स्थिति',mr:'चालू स्थिती',en:'Working'}, scrap: {bn:'ভাঙা',gu:'તૂટેલું',kn:'ತುಂಡಾದ',te:'విరిగిన',ta:'உடைந்த',hi:'टूटा-फूटा',mr:'तुटलेले',en:'Broken Scrap'}, semi: {bn:'আংশিক',gu:'આંશિક',kn:'ಅರೆ-ಹಾನಿಯಾಗಿದೆ',te:'పాక్షికంగా',ta:'பழுது',hi:'मरम्मत योग्य',mr:'दुरुस्तीयोग्य',en:'Repairable'} };
+                    return cond === 'working' ? (condMap.working[lang]||'Working') : cond === 'scrap' ? (condMap.scrap[lang]||'Broken') : (condMap.semi[lang]||'Repairable');
+                  })()}
                   </span>
                   <span className="text-[9px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-bold uppercase">{transaction.itemAge || '2-5 Yrs'}</span>
                 </div>
