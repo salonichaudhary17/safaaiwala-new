@@ -681,7 +681,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                       type="number" 
                       value={weightKg} 
                       onChange={(e) => setWeightKg(Math.max(0.1, Number(e.target.value)))}
-                      className="w-full border border-slate-300 rounded-lg p-3 text-xl font-black text-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 text-center shadow-inner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      className="w-full border border-slate-300 rounded-lg p-3 text-xl font-black text-slate-800 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 text-center shadow-inner"
                       step="0.1"
                     />
                     <div className="flex gap-1.5 w-full">
