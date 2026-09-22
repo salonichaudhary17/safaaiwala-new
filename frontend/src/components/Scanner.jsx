@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-webgl';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
-import { Camera, RefreshCw, AlertTriangle, CheckCircle, WifiOff, Volume2, Plus, Minus, ShieldAlert, Sparkles, Package } from 'lucide-react';
+import { Camera, RefreshCw, AlertTriangle, CheckCircle, WifiOff, Volume2, Plus, Minus, ShieldAlert, Sparkles, Package ,  Edit3, ChevronDown, ChevronUp } from 'lucide-react';
 import RecyclerMatch from './RecyclerMatch';
 import { translations } from '../i18n/translations';
 
