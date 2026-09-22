@@ -31,7 +31,25 @@ export default function SafetyGuide({ lang = 'hi' }) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN');
+      
+        // Force wake-up for Desktop Chrome bug where voices aren't loaded immediately
+        let voices = window.speechSynthesis.getVoices();
+        const targetLang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN');
+        utterance.lang = targetLang;
+        
+        if (voices.length > 0) {
+          // 1. Try to find an exact regional match (e.g., Google हिन्दी)
+          let voice = voices.find(v => v.lang.replace('_','-') === targetLang);
+          // 2. Try to find a broad language match (e.g., hi)
+          if (!voice) voice = voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+          // 3. Fallback to any Google Voice (Desktop Chrome cloud voices usually work better)
+          if (!voice && targetLang !== 'en-IN') voice = voices.find(v => v.name.includes('Google') && v.lang.startsWith(targetLang.split('-')[0]));
+          
+          if (voice) {
+            utterance.voice = voice;
+          }
+        }
+
       window.speechSynthesis.speak(utterance);
     }
   };
