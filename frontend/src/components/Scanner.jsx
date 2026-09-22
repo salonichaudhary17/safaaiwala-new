@@ -230,7 +230,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
       };
       setAnalysis(result);
       setLoading(false);
-      speakWarning(`${item.name} पहचाना गया। ${item.tip}`);
+      speakWarning(`${item.name} ` + (
+      {
+        hi: 'पहचाना गया।',
+        mr: 'ओळखले गेले.',
+        en: 'detected.',
+        bn: 'শনাক্ত করা হয়েছে.',
+        gu: 'ઓળખાયેલ છે.',
+        kn: 'ಪತ್ತೆಯಾಗಿದೆ.',
+        te: 'కనుగొనబడింది.',
+        ta: 'கண்டறியப்பட்டது.'
+      }[lang] || 'detected.'
+    ) + ` ${item.tip}`);
     }, 1500);
   };
 
@@ -251,7 +262,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
     };
 
     setAnalysis(result);
-    speakWarning(`${item.name} पहचाना गया। ${item.tip}`);
+    speakWarning(`${item.name} ` + (
+      {
+        hi: 'पहचाना गया।',
+        mr: 'ओळखले गेले.',
+        en: 'detected.',
+        bn: 'শনাক্ত করা হয়েছে.',
+        gu: 'ઓળખાયેલ છે.',
+        kn: 'ಪತ್ತೆಯಾಗಿದೆ.',
+        te: 'కనుగొనబడింది.',
+        ta: 'கண்டறியப்பட்டது.'
+      }[lang] || 'detected.'
+    ) + ` ${item.tip}`);
   };
 
   const captureAndAnalyze = async () => {
@@ -312,7 +334,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                  confidence: Math.round(topMatch.score * 100)
                };
                setAnalysis(result);
-               speakWarning(`${topMatch.class} पहचाना गया। ${item.tip}`);
+               speakWarning(`${topMatch.class} ` + (
+      {
+        hi: 'पहचाना गया।',
+        mr: 'ओळखले गेले.',
+        en: 'detected.',
+        bn: 'শনাক্ত করা হয়েছে.',
+        gu: 'ઓળખાયેલ છે.',
+        kn: 'ಪತ್ತೆಯಾಗಿದೆ.',
+        te: 'కనుగొనబడింది.',
+        ta: 'கண்டறியப்பட்டது.'
+      }[lang] || 'detected.'
+    ) + ` ${item.tip}`);
              }
           }
         }
@@ -352,7 +385,18 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
           const resData = await res.json();
           const analysisData = resData.data ? resData.data : resData;
           setAnalysis(analysisData);
-          speakWarning(analysisData.safetyWarning || analysisData.disposalTips || ' स्कैन पूरा हुआ');
+          speakWarning(analysisData.safetyWarning || analysisData.disposalTips || (
+      {
+        hi: 'स्कैन पूरा हुआ',
+        mr: 'स्कॅन पूर्ण झाले',
+        en: 'Scan complete',
+        bn: 'স্ক্যান সম্পূর্ণ',
+        gu: 'સ્કેન પૂર્ણ',
+        kn: 'ಸ್ಕ್ಯಾನ್ ಪೂರ್ಣಗೊಂಡಿದೆ',
+        te: 'స్కాన్ పూర్తయింది',
+        ta: 'ஸ்கேன் முடிந்தது'
+      }[lang] || 'Scan complete'
+    ));
           identified = true;
         }
       } catch (err) {
@@ -844,7 +888,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                   itemAge
                 });
               }
-              speakWarning(t.savedSuccess);
+              speakWarning((t.savedSuccess || '').replace(/!/g, '.'));
             }}
             className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg transition active:scale-98"
           >
