@@ -687,13 +687,13 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
                       />
                       <div className="flex flex-col w-14 shrink-0 gap-1">
                         <button 
-                          onClick={() => setWeightKg(+(weightKg + 1).toFixed(1))}
+                          onClick={() => setWeightKg(+(weightKg + 0.1).toFixed(1))}
                           className="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-md flex items-center justify-center active:bg-slate-300 transition-colors shadow-sm"
                         >
                           <ChevronUp className="w-6 h-6 text-slate-700 font-bold" />
                         </button>
                         <button 
-                          onClick={() => setWeightKg(Math.max(0.1, +(weightKg - 1).toFixed(1)))}
+                          onClick={() => setWeightKg(Math.max(0.1, +(weightKg - 0.1).toFixed(1)))}
                           className="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-md flex items-center justify-center active:bg-slate-300 transition-colors shadow-sm"
                         >
                           <ChevronDown className="w-6 h-6 text-slate-700 font-bold" />
