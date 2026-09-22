@@ -123,10 +123,11 @@ export default function App() {
 
   const handleScanComplete = async (analysisResult) => {
     const weight = analysisResult.weightKg || 1;
-    const rate = analysisResult.estimatedValuePerKg || analysisResult.rate || 100;
-    const total = Math.round(weight * rate);
+    const total = analysisResult.totalCalculatedValue || Math.round(weight * (analysisResult.estimatedValuePerKg || analysisResult.rate || 100));
+    const condition = analysisResult.condition || 'semi-working';
+    const itemAge = analysisResult.itemAge || '2-5';
     const timeNow = new Date().toISOString();
-    const handoverHash = generateClientHash(`collector-${analysisResult.category}-${weight}-${total}-${timeNow}`);
+    const handoverHash = generateClientHash(`collector-${analysisResult.category}-${weight}-${condition}-${itemAge}-${total}-${timeNow}`);
 
     let location = null;
     try {
@@ -152,10 +153,14 @@ export default function App() {
         materialName: analysisResult.itemType || analysisResult.category,
         category: analysisResult.category || 'e-waste',
         weightKg: weight,
-        ratePerKg: rate,
-        subtotal: total
+        ratePerKg: analysisResult.estimatedValuePerKg || analysisResult.rate || 100,
+        subtotal: total,
+        condition,
+        itemAge
       }],
       totalAmount: total,
+      condition,
+      itemAge,
       hazardLevel: analysisResult.hazardLevel || 'Moderate',
       handoverHash: handoverHash,
       createdAt: timeNow,
