@@ -55,7 +55,7 @@ export default function Passbook({ lang = 'hi' }) {
             <div className="flex items-center gap-2">
               <Wallet className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wide">
-                {lang === 'hi' ? 'कुल कमाई' : lang === 'mr' ? 'एकूण कमाई' : 'Total Earned'}
+                {{ hi: 'कुल कमाई', mr: 'एकूण कमाई', en: 'Total Earned', bn: 'মোট উপার্জন', gu: 'કુલ કમાણી', kn: 'ಒಟ್ಟು ಗಳಿಕೆ', te: 'మొత్తం సంపాదన', ta: 'மொத்த வருமானம்' }[lang] || 'Total Earned'}
               </span>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function Passbook({ lang = 'hi' }) {
             <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wide">
-                {lang === 'hi' ? 'बकाया राशि' : lang === 'mr' ? 'बाकी रक्कम' : 'Pending Dues'}
+                {{ hi: 'बकाया राशि', mr: 'बाकी रक्कम', en: 'Pending Dues', bn: 'বকেয়া পাওনা', gu: 'બાકી રકમ', kn: 'ಬಾಕಿ ಮೊತ್ತ', te: 'పెండింగ్ బకాయిలు', ta: 'நிலுவை தொகை' }[lang] || 'Pending Dues'}
               </span>
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function Passbook({ lang = 'hi' }) {
            <Package className="w-8 h-8 text-slate-400 p-1.5 bg-white rounded-xl shadow-sm border border-slate-100" />
            <div>
              <span className="block text-xs font-bold text-slate-500 uppercase">
-               {lang === 'hi' ? 'कुल कबाड़ दिया' : lang === 'mr' ? 'एकूण भंगार दिले' : 'Total Scrap Handed Over'}
+               {{ hi: 'कुल कबाड़ दिया', mr: 'एकूण भंगार दिले', en: 'Total Scrap Handed Over', bn: 'মোট স্ক্র্যাপ দেওয়া হয়েছে', gu: 'કુલ ભંગાર આપ્યો', kn: 'ಒಟ್ಟು ಸ್ಕ್ರ್ಯಾಪ್ ನೀಡಲಾಗಿದೆ', te: 'మొత్తం స్క్రాప్ ఇవ్వబడింది', ta: 'மொத்த ஸ்கிராப் கொடுக்கப்பட்டது' }[lang] || 'Total Scrap Handed Over'}
              </span>
              <span className="text-lg font-black text-slate-800">{stats.totalWeight} KG</span>
            </div>
@@ -101,14 +101,14 @@ export default function Passbook({ lang = 'hi' }) {
       <div>
         <h3 className="font-black text-lg text-slate-800 mb-3 flex items-center gap-2">
           <History className="w-5 h-5 text-slate-400" />
-          {lang === 'hi' ? 'लेन-देन इतिहास' : lang === 'mr' ? 'व्यवहार इतिहास' : 'Transaction History'}
+          {{ hi: 'लेन-देन इतिहास', mr: 'व्यवहार इतिहास', en: 'Transaction History', bn: 'লেনদেনের ইতিহাস', gu: 'વ્યવહાર ઇતિહાસ', kn: 'ವಹಿವಾಟು ಇತಿಹಾಸ', te: 'లావాదేవీ చరిత్ర', ta: 'பரிவர்த்தனை வரலாறு' }[lang] || 'Transaction History'}
         </h3>
         
         {transactions.length === 0 ? (
           <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center flex flex-col items-center justify-center shadow-sm">
             <AlertCircle className="w-12 h-12 text-slate-300 mb-3" />
             <p className="text-slate-500 font-medium text-sm">
-              {lang === 'hi' ? 'अभी तक कोई लेन-देन नहीं हुआ' : lang === 'mr' ? 'अद्याप कोणताही व्यवहार नाही' : 'No transactions yet'}
+              {{ hi: 'अभी तक कोई लेन-देन नहीं हुआ', mr: 'अद्याप कोणताही व्यवहार नाही', en: 'No transactions yet', bn: 'এখনও কোনো লেনদেন হয়নি', gu: 'હજી સુધી કોઈ વ્યવહાર નથી', kn: 'ಇನ್ನೂ ಯಾವುದೇ ವಹಿವಾಟುಗಳಿಲ್ಲ', te: 'ఇంకా లావాదేవీలు లేవు', ta: 'இதுவரை எந்த பரிவர்த்தனையும் இல்லை' }[lang] || 'No transactions yet'}
             </p>
           </div>
         ) : (
@@ -121,15 +121,15 @@ export default function Passbook({ lang = 'hi' }) {
                   </div>
                   <div>
                     <h4 className="font-bold text-slate-800 text-sm">
-                      {txn.itemsList?.[0]?.materialName || (lang === 'hi' ? 'ई-कचरा' : lang === 'mr' ? 'ई-कचरा' : 'E-Waste')} 
+                      {txn.itemsList?.[0]?.materialName || ({ hi: 'ई-कचरा', mr: 'ई-कचरा', en: 'E-Waste', bn: 'ই-বর্জ্য', gu: 'ઇ-કચરો', kn: 'ಇ-ತ್ಯಾಜ್ಯ', te: 'ఈ-వేస్ట్', ta: 'இ-கழிவு' }[lang] || 'E-Waste')} 
                       <span className="text-slate-500 ml-1 font-medium">({txn.itemsList?.[0]?.weightKg || 1}kg)</span>
                     </h4>
                     <span className="text-xs text-slate-500 font-mono mt-0.5 block">
-                      {new Date(txn.createdAt).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      {new Date(txn.createdAt).toLocaleDateString(({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN'), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                     </span>
                     {!txn.synced && (
                       <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold mt-1 inline-block">
-                        {lang === 'hi' ? 'ऑफ़लाइन (सिंक बाकी)' : lang === 'mr' ? 'ऑफलाइन (सिंक बाकी)' : 'Offline (Pending Sync)'}
+                        {{ hi: 'ऑफ़लाइन (सिंक बाकी)', mr: 'ऑफलाइन (सिंक बाकी)', en: 'Offline (Pending Sync)', bn: 'অফলাইন (সিঙ্ক বাকি)', gu: 'ઓફલાઇન (સિંક બાકી)', kn: 'ಆಫ್‌ಲೈನ್ (ಸಿಂಕ್ ಬಾಕಿ)', te: 'ఆఫ్‌లైన్ (సింక్ పెండింగ్)', ta: 'ஆஃப்லைன் (ஒத்திசைவு நிலுவையில் உள்ளது)' }[lang] || 'Offline (Pending Sync)'}
                       </span>
                     )}
                   </div>
@@ -138,8 +138,8 @@ export default function Passbook({ lang = 'hi' }) {
                   <div className="font-black text-lg text-slate-900">₹{txn.totalAmount}</div>
                   <div className={`text-[10px] font-bold uppercase tracking-wider ${txn.status === 'verified_offline' || !txn.synced ? 'text-amber-500' : 'text-emerald-500'}`}>
                     {txn.status === 'verified_offline' || !txn.synced 
-                      ? (lang === 'hi' ? 'बकाया' : lang === 'mr' ? 'बाकी' : 'PENDING')
-                      : (lang === 'hi' ? 'प्राप्त' : lang === 'mr' ? 'मिळाले' : 'RECEIVED')}
+                      ? ({ hi: 'बकाया', mr: 'बाकी', en: 'PENDING', bn: 'বকেয়া', gu: 'બાકી', kn: 'ಬಾಕಿ', te: 'పెండింగ్', ta: 'நிலுவையில்' }[lang] || 'PENDING')
+                      : ({ hi: 'प्राप्त', mr: 'मिळाले', en: 'RECEIVED', bn: 'প্রাপ্ত', gu: 'મળ્યું', kn: 'ಸ್ವೀಕರಿಸಲಾಗಿದೆ', te: 'స్వీకరించబడింది', ta: 'பெறப்பட்டது' }[lang] || 'RECEIVED')}
                   </div>
                 </div>
               </div>
