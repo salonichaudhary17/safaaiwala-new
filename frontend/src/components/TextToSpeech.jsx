@@ -9,7 +9,7 @@ export default function TextToSpeech({ text, lang = 'hi-IN' }) {
     }
     window.speechSynthesis.cancel(); // Stop active speech
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === 'mr' ? 'mr-IN' : lang === 'hi' ? 'hi-IN' : 'en-US';
+    utterance.lang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-US', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-US');
     utterance.rate = 0.9; // Slightly slower rate for clarity
     window.speechSynthesis.speak(utterance);
   };

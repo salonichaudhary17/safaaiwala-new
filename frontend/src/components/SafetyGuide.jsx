@@ -31,7 +31,7 @@ export default function SafetyGuide({ lang = 'hi' }) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = lang === 'hi' ? 'hi-IN' : lang === 'mr' ? 'mr-IN' : 'en-IN';
+      utterance.lang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN');
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -53,7 +53,7 @@ export default function SafetyGuide({ lang = 'hi' }) {
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-6 h-6" />
                 <h3 className="font-black text-lg">
-                  {lang === 'hi' ? 'सुरक्षा निर्देश' : lang === 'mr' ? 'सुरक्षा सूचना' : 'Safety Guidelines'}
+                                    {{ hi: 'सुरक्षा निर्देश', mr: 'सुरक्षा सूचना', en: 'Safety Guidelines', bn: 'নিরাপত্তা নির্দেশিকা', gu: 'સુરક્ષા માર્ગદર્શિકા', kn: 'ಸುರಕ್ಷತಾ ಮಾರ್ಗಸೂಚಿಗಳು', te: 'భద్రతా సూచనలు', ta: 'பாதுகாப்பு வழிகாட்டுதல்கள்' }[lang] || 'Safety Guidelines'}
                 </h3>
               </div>
               <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-red-700 transition">

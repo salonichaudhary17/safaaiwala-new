@@ -112,7 +112,7 @@ export default function Scanner({ apiBaseUrl, onAnalysisComplete, lang = 'hi' })
       try {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = lang === 'mr' ? 'mr-IN' : lang === 'hi' ? 'hi-IN' : 'en-IN';
+        utterance.lang = ({ hi: 'hi-IN', mr: 'mr-IN', en: 'en-IN', bn: 'bn-IN', gu: 'gu-IN', kn: 'kn-IN', te: 'te-IN', ta: 'ta-IN' }[lang] || 'en-IN');
         utterance.rate = 0.95;
         window.speechSynthesis.speak(utterance);
       } catch (e) {
