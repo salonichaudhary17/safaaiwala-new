@@ -1,0 +1,15 @@
+Date,Material,Local_Aggregator_Rate_INR,LME_Baseline_USD,Trend
+2026-03-01,Copper Wire & Cables,420,8500,stable
+2026-03-01,Printed Circuit Boards (PCB),175,N/A,stable
+2026-03-01,Lithium-ion Batteries,210,12000,up
+2026-03-01,CRT Monitor Glass,80,N/A,stable
+2026-03-15,Copper Wire & Cables,425,8600,up
+2026-03-15,Printed Circuit Boards (PCB),178,N/A,up
+2026-03-15,Lithium-ion Batteries,215,12500,up
+2026-04-01,Copper Wire & Cables,430,8750,up
+2026-04-01,Printed Circuit Boards (PCB),180,N/A,up
+2026-04-01,Lithium-ion Batteries,220,13000,up
+2026-05-01,Copper Wire & Cables,435,8900,up
+2026-06-01,Copper Wire & Cables,440,9100,up
+2026-06-01,Printed Circuit Boards (PCB),182,N/A,stable
+2026-06-01,Lithium-ion Batteries,225,13500,up

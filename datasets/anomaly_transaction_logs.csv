@@ -1,0 +1,10 @@
+Transaction_ID,Timestamp,Material_Category,Claimed_Weight_Kg,Visual_Volume_Class,Z_Score,Is_Anomaly,Geo_Velocity_kmh
+TXN-1001,2026-06-15T08:30:00Z,pcb,2.5,small,0.5,False,15
+TXN-1002,2026-06-15T09:15:00Z,li_ion_battery,4.0,medium,1.2,False,12
+TXN-1003,2026-06-15T10:05:00Z,copper_cables,1.5,small,0.3,False,22
+TXN-1004,2026-06-15T10:10:00Z,crt_monitor,55.0,medium,4.8,True,150
+TXN-1005,2026-06-15T11:45:00Z,electric_motors,12.0,medium,1.8,False,10
+TXN-1006,2026-06-15T12:30:00Z,li_ion_battery,85.0,small,5.2,True,18
+TXN-1007,2026-06-15T14:20:00Z,aluminium_scrap,5.5,large,0.9,False,25
+TXN-1008,2026-06-15T14:25:00Z,pcb,3.0,small,0.6,False,850
+TXN-1009,2026-06-15T16:00:00Z,crt_monitor,15.0,medium,0.4,False,14
